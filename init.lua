@@ -1,8 +1,3 @@
----
-
-# 📁 init.lua
-
-```lua
 -- lazy.nvim bootstrap
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -16,7 +11,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 
-  -- Web icons
+  -- Иконки
   {
     "nvim-tree/nvim-web-devicons",
     config = function()
@@ -33,7 +28,7 @@ require("lazy").setup({
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-tree/nvim-web-devicons"
     },
-    build = "make",  -- сборка fzf-native
+    build = "make", -- автоматическая сборка fzf-native
     config = function()
       local telescope = require("telescope")
       telescope.setup({
@@ -84,7 +79,7 @@ require("lazy").setup({
   },
 })
 
--- Нумерация
+-- Номера строк
 vim.opt.number = true
 vim.opt.relativenumber = true
 
