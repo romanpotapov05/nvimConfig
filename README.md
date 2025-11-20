@@ -1,5 +1,14 @@
 # Neovim Config by romanpotapov05
 
+# Удаляем конфиги
+rm -rf ~/.config/nvim
+rm -rf ~/.local/share/nvim
+
+# Удаляем все временные файлы
+rm -rf ~/.local/state/nvim
+rm -rf ~/.cache/nvim
+rm -rf ~/.local/share/nvim/shada
+
 Персональный конфиг Neovim с:
 
 - Telescope (поиск файлов, содержимого, файловый менеджер)  
