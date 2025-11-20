@@ -1,4 +1,6 @@
--- lazy.nvim bootstrap
+-- ==============================
+-- Lazy.nvim bootstrap
+-- ==============================
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -11,7 +13,9 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 
+  -- ==============================
   -- Иконки
+  -- ==============================
   {
     "nvim-tree/nvim-web-devicons",
     config = function()
@@ -19,7 +23,9 @@ require("lazy").setup({
     end
   },
 
+  -- ==============================
   -- Telescope
+  -- ==============================
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
@@ -28,7 +34,7 @@ require("lazy").setup({
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-tree/nvim-web-devicons"
     },
-    build = "make", -- автоматическая сборка fzf-native
+    build = "make",
     config = function()
       local telescope = require("telescope")
       telescope.setup({
@@ -56,7 +62,9 @@ require("lazy").setup({
     end,
   },
 
+  -- ==============================
   -- Tree-sitter
+  -- ==============================
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -68,7 +76,9 @@ require("lazy").setup({
     end
   },
 
+  -- ==============================
   -- Тема TokyoNight
+  -- ==============================
   {
     "folke/tokyonight.nvim",
     lazy = false,
@@ -77,12 +87,65 @@ require("lazy").setup({
       vim.cmd[[colorscheme tokyonight]]
     end
   },
+
+  -- ==============================
+  -- LSP и автодополнение
+  -- ==============================
+  { "neovim/nvim-lspconfig" },
+  { "williamboman/mason.nvim", build = ":MasonUpdate" },
+  { "williamboman/mason-lspconfig.nvim" },
+  { "hrsh7th/nvim-cmp" },
+  { "hrsh7th/cmp-nvim-lsp" },
+  { "hrsh7th/cmp-buffer" },
+  { "hrsh7th/cmp-path" },
+  { "L3MON4D3/LuaSnip" },
+  { "saadparwaiz1/cmp_luasnip" },
+
 })
 
--- Номера строк
+-- ==============================
+-- Нумерация
+-- ==============================
 vim.opt.number = true
 vim.opt.relativenumber = true
 
--- Мягкая подсветка текущей строки
+-- ==============================
+-- Мягкая подсветка строки
+-- ==============================
 vim.opt.cursorline = true
 vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2c2c2c" })
+
+-- ==============================
+-- Настройка nvim-cmp
+-- ==============================
+local cmp = require("cmp")
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      require("luasnip").lsp_expand(args.body)
+    end,
+  },
+  mapping = {
+    ["<Tab>"] = cmp.mapping.select_next_item(),
+    ["<S-Tab>"] = cmp.mapping.select_prev_item(),
+    ["<CR>"] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+    { name = "buffer" },
+    { name = "path" },
+  })
+})
+
+-- ==============================
+-- Настройка LSP
+-- ==============================
+local lspconfig = require("lspconfig")
+
+-- Для Java
+lspconfig.jdtls.setup{}
+
+-- Горячие клавиши для LSP
+vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "Перейти к определению" })
+vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "Показать документацию" })
