@@ -10,17 +10,22 @@
 - Номера строк + относительная нумерация  
 - Мягкая подсветка текущей строки  
 
+---
+
 ## 🔹 Требования
 
 - Kubuntu / Ubuntu (Linux)  
 - Git  
 - Curl  
-- Ripgrep  
+
+---
 
 ## 🔹 Установка «одной командой» (без потери старого конфига)
 
+Просто скопируй и вставь в терминал:
+
 ```bash
-# Установка Neovim, git, curl и ripgrep
+# Установка Neovim 0.10+, git, curl и ripgrep
 sudo apt update && sudo apt install -y neovim git curl ripgrep
 
 # Бэкап старого конфига, если есть
@@ -36,6 +41,9 @@ git clone --filter=blob:none https://github.com/folke/lazy.nvim.git ~/.local/sha
 
 # Сборка плагинов и установка через lazy.nvim
 nvim --headless +"Lazy! sync" +qa
+
+# Сборка fzf-native, если требуется
+nvim --headless -c 'Lazy! build telescope-fzf-native.nvim' -c qa
 
 # Обновление Tree-sitter языков для подсветки
 nvim --headless -c 'TSUpdate java lua bash json vim regex' -c qa
