@@ -1,6 +1,4 @@
--- =========================================
--- Lazy.nvim bootstrap
--- =========================================
+-- lazy.nvim bootstrap
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -13,9 +11,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 
-  -- =========================================
   -- Иконки
-  -- =========================================
   {
     "nvim-tree/nvim-web-devicons",
     config = function()
@@ -23,9 +19,7 @@ require("lazy").setup({
     end
   },
 
-  -- =========================================
   -- Telescope
-  -- =========================================
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
@@ -34,12 +28,16 @@ require("lazy").setup({
       "nvim-telescope/telescope-file-browser.nvim",
       "nvim-tree/nvim-web-devicons"
     },
-    build = "make",
+    build = "make", -- автоматическая сборка fzf-native
     config = function()
       local telescope = require("telescope")
       telescope.setup({
-        defaults = { file_ignore_patterns = { "node_modules", ".git/" } }
+        defaults = {
+          file_ignore_patterns = { "node_modules", ".git/" },
+        },
+        extensions = { fzf = { fuzzy = true, override_generic_sorter = true, override_file_sorter = true } },
       })
+
       telescope.load_extension("fzf")
       telescope.load_extension("file_browser")
 
@@ -58,9 +56,7 @@ require("lazy").setup({
     end,
   },
 
-  -- =========================================
   -- Tree-sitter
-  -- =========================================
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
@@ -72,9 +68,7 @@ require("lazy").setup({
     end
   },
 
-  -- =========================================
   -- Тема TokyoNight
-  -- =========================================
   {
     "folke/tokyonight.nvim",
     lazy = false,
@@ -83,21 +77,12 @@ require("lazy").setup({
       vim.cmd[[colorscheme tokyonight]]
     end
   },
-
 })
 
--- =========================================
--- Нумерация и подсветка строки
--- =========================================
+-- Номера строк
 vim.opt.number = true
 vim.opt.relativenumber = true
+
+-- Мягкая подсветка текущей строки
 vim.opt.cursorline = true
 vim.api.nvim_set_hl(0, "CursorLine", { bg = "#2c2c2c" })
-
--- =========================================
--- Простое автодополнение для 0.10
--- =========================================
-vim.o.completeopt = "menuone,noselect"
-vim.cmd [[
-  inoremap <C-Space> <C-x><C-o>
-]]
